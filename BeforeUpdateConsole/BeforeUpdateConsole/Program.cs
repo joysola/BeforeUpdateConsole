@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace BeforeUpdateConsole
             // 1. 获取配置的进程名
             var programName = ConfigurationManager.AppSettings["ProgramName"]; // 进程名
             var programChineseName = ConfigurationManager.AppSettings["ProgramChineseName"] ?? programName; // 进程中文名
-            
+
             if (string.IsNullOrEmpty(programName)) // 没有配置进程名字，退出
             {
                 return;
@@ -33,9 +34,12 @@ namespace BeforeUpdateConsole
                     MessageBoxModal.Application);
                 return;
             }
-
             // 3. 启动安装程序
-            Process.Start("setup.exe");
+            string setupFile = "setup.exe";
+            if (File.Exists(setupFile))
+            {
+                Process.Start(setupFile);
+            }
         }
     }
 }
